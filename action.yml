@@ -14,15 +14,18 @@ inputs:
     required: false
     default: '60000'
   adminAccountUsername:
-    description: 'Account name of a pre-existing user that is allowed to create other users (using ad-hoc commands).'
+    description: 'Account name of a pre-existing user that is allowed to create other users, per XEP-0133. If not provided, In-band registration (XEP-0077) will be used.'
     required: false
   adminAccountPassword:
     description: 'Password for the admin account.'
     required: false
   smackVersion:
-    description: 'Version of the Smack library providing the SINT test implementation'
+    description: 'Version of the Smack library providing the SINT test implementation.'
     required: true
     default: '4.4.6'
+  disabledTests:
+    description: 'Comma-separated list of of tests that are to be skipped (eg: "EntityCapsTest,SoftwareInfoIntegrationTest")'
+    required: false
 
 runs:
   using: "composite"
@@ -55,5 +58,5 @@ runs:
           -Dsinttest.adminAccountPassword="${{ inputs.adminAccountPassword }}" \
           -Dsinttest.enabledConnections=tcp \
           -Dsinttest.dnsResolver=javax \
-          -Dsinttest.disabledTests="-Dsinttest.disabledTests=EntityCapsTest,SoftwareInfoIntegrationTest,XmppConnectionIntegrationTest,StreamManagementTest,WaitForClosingStreamElementTest,IoTControlIntegrationTest,ModularXmppClientToServerConnectionLowLevelIntegrationTest"
+          -Dsinttest.disabledTests="-Dsinttest.disabledTests=${{ inputs.disabledTests }}"
       shell: bash
