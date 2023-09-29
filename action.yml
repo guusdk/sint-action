@@ -8,13 +8,17 @@ inputs:
   timeout:
     description: 'Amount of milliseconds after which a XMPP action (typically an IQ request) is considered timed out.'
     required: false
-    default: 60000
+    default: '60000'
   adminAccountUsername:
     description: 'Account name of a pre-existing user that is allowed to create other users (using ad-hoc commands).'
     required: false
   adminAccountPassword:
     description: 'Password for the admin account.'
     required: false
+  smackVersion:
+    description: 'Version of the Smack library providing the SINT test implementation'
+    required: true
+    default: '4.4.6'
 
 runs:
   using: "composite"
@@ -28,8 +32,26 @@ runs:
       with:
         gradle-version: 6.3
 
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+    - run: |
+        gradle --console=plain \
+               --build-file ${{ github.action_path }}/test.gradle \
+               -PsmackVersion="${{ inputs.smackVersion }}" \
+               -q dependencies
       shell: bash
 
-    - run: executeTests.sh -d -l -h ${{ inputs.domain }} -u ${{ inputs.adminAccountUsername }} -p ${{ inputs.adminAccountPassword }}
+    - run: |
+        gradle \
+          --console=plain \
+          --stacktrace \
+          run \
+          -b ${{ github.action_path }}/test.gradle \
+          -PsmackVersion="${{ inputs.smackVersion }}" \
+          -Dsinttest.service="${{ inputs.domain }} " \
+          -Dsinttest.securityMode=disabled \
+          -Dsinttest.replyTimeout=${{ inputs.timeout }} \
+          -Dsinttest.adminAccountUsername="${{ inputs.adminAccountUsername }}" \
+          -Dsinttest.adminAccountPassword="${{ inputs.adminAccountPassword }}" \
+          -Dsinttest.enabledConnections=tcp \
+          -Dsinttest.dnsResolver=javax \
+          -Dsinttest.disabledTests="-Dsinttest.disabledTests=EntityCapsTest,SoftwareInfoIntegrationTest,XmppConnectionIntegrationTest,StreamManagementTest,WaitForClosingStreamElementTest,IoTControlIntegrationTest,ModularXmppClientToServerConnectionLowLevelIntegrationTest"
       shell: bash
