@@ -31,5 +31,5 @@ runs:
       with:
         gradle-version: 6.3
 
-    - run: runIntegrationTests -d -l -h ${{ inputs.domain }} -u ${{ inputs.adminAccountUsername }} -p ${{ adminAccountPassword }}
+    - run: runIntegrationTests -d -l -h ${{ inputs.domain }} -u ${{ inputs.adminAccountUsername }} -p ${{ inputs.adminAccountPassword }}
       shell: bash
