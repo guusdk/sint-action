@@ -6,7 +6,7 @@ inputs:
     required: true
     default: 'example.org'
   timeout:
-    description: 'Amount of milliseconds after which a XMPP action (typically an IQ request) is considered timed out."
+    description: 'Amount of milliseconds after which a XMPP action (typically an IQ request) is considered timed out.'
     required: false
     default: 60000
   adminAccountUsername:
