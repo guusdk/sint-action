@@ -1,0 +1,21 @@
+name: 'Smack Integration Tests'
+description: 'Run Tests'
+inputs:
+  domain:
+    description: 'XMPP domain name of server under test'
+    required: true
+    default: 'example.org'
+runs:
+  using: "composite"
+  steps:
+    - shell: bash # Set JAVA_HOME to use Java 11
+      run: echo "JAVA_HOME=$(echo $JAVA_HOME_11_X64)" >> $GITHUB_ENV
+    - uses: actions/setup-java@v3
+      with:
+        java-version: 11
+        distribution: zulu
+    - shell: bash # name: Fix file permissions
+      run: |
+        chmod +x ./runIntegrationTests
+    - run: ./runIntegrationTests -d -l -h ${{ inputs.domain }}
+      shell: bash
