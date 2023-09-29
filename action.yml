@@ -44,7 +44,7 @@ runs:
       shell: bash
 
     - run: |
-        sudo echo "${{ inputs.ipAddress }} ${{ inputs.domain }}" >> /etc/hosts
+        sudo echo "${{ inputs.ipAddress }} ${{ inputs.domain }}" | sudo tee -a /etc/hosts
       shell: bash
 
     - run: |
