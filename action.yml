@@ -37,17 +37,11 @@ runs:
         gradle-version: 6.3
 
     - run: |
+        sudo echo "${{ inputs.ipAddress }} ${{ inputs.domain }}" | sudo tee -a /etc/hosts
         gradle --console=plain \
                --build-file ${{ github.action_path }}/test.gradle \
                -PsmackVersion="${{ inputs.smackVersion }}" \
                -q dependencies
-      shell: bash
-
-    - run: |
-        sudo echo "${{ inputs.ipAddress }} ${{ inputs.domain }}" | sudo tee -a /etc/hosts
-      shell: bash
-
-    - run: |
         gradle \
           --console=plain \
           --stacktrace \
