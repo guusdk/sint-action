@@ -77,11 +77,11 @@ done
 # Remove last ',' from the argument. Can't use ${SINTTEST_DISABLED_TESTS_ARGUMENT::-1} because bash on MacOS is infuriatingly incompatible.
 SINTTEST_DISABLED_TESTS_ARGUMENT="${SINTTEST_DISABLED_TESTS_ARGUMENT:0:$((${#SINTTEST_DISABLED_TESTS_ARGUMENT}-1))}"
 
-./gradlew --console=plain \
+gradle --console=plain \
 		--build-file test.gradle \
 		-PsmackVersion="${SMACK_VERSION}" \
 		-q dependencies
-./gradlew --console=plain \
+gradle --console=plain \
 		--stacktrace \
 		run \
 		-b test.gradle \
