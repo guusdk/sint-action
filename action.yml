@@ -19,9 +19,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - shell: bash # Set JAVA_HOME to use Java 11
-      run: echo "JAVA_HOME=$(echo $JAVA_HOME_11_X64)" >> $GITHUB_ENV
-
     - uses: actions/setup-java@v3
       with:
         java-version: 11
@@ -31,5 +28,5 @@ runs:
       with:
         gradle-version: 6.3
 
-    - run: executeTests.sh -d -l -h ${{ inputs.domain }} -u ${{ inputs.adminAccountUsername }} -p ${{ inputs.adminAccountPassword }}
+    - run: ${{ github.action_path }}/executeTests.sh -d -l -h ${{ inputs.domain }} -u ${{ inputs.adminAccountUsername }} -p ${{ inputs.adminAccountPassword }}
       shell: bash
