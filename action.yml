@@ -5,6 +5,17 @@ inputs:
     description: 'XMPP domain name of server under test'
     required: true
     default: 'example.org'
+  timeout:
+    description: 'Amount of milliseconds after which a XMPP action (typically an IQ request) is considered timed out."
+    required: false
+    default: 60000
+  adminAccountUsername:
+    description: 'Account name of a pre-existing user that is allowed to create other users (using ad-hoc commands).'
+    required: false
+  adminAccountPassword:
+    description: 'Password for the admin account.'
+    required: false
+
 runs:
   using: "composite"
   steps:
@@ -20,9 +31,5 @@ runs:
       with:
         gradle-version: 6.3
 
-    - shell: bash # name: Fix file permissions
-      run: |
-        chmod +x ./runIntegrationTests
-
-    - run: ./runIntegrationTests -d -l -h ${{ inputs.domain }}
+    - run: runIntegrationTests -d -l -h ${{ inputs.domain }} -u ${{ inputs.adminAccountUsername }} -p ${{ adminAccountPassword }}
       shell: bash
