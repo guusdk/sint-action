@@ -48,7 +48,7 @@ runs:
           run \
           -b ${{ github.action_path }}/test.gradle \
           -PsmackVersion="${{ inputs.smackVersion }}" \
-          -Dsinttest.service="${{ inputs.domain }} " \
+          -Dsinttest.service="${{ inputs.domain }}" \
           -Dsinttest.securityMode=disabled \
           -Dsinttest.replyTimeout=${{ inputs.timeout }} \
           -Dsinttest.adminAccountUsername="${{ inputs.adminAccountUsername }}" \
