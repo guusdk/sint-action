@@ -1,6 +1,10 @@
 name: 'Smack Integration Tests'
 description: 'Run Tests'
 inputs:
+  ipAddress:
+    description: 'The IP address of the server under test'
+    required: true
+    default: '127.0.0.1'
   domain:
     description: 'XMPP domain name of server under test'
     required: true
@@ -37,6 +41,10 @@ runs:
                --build-file ${{ github.action_path }}/test.gradle \
                -PsmackVersion="${{ inputs.smackVersion }}" \
                -q dependencies
+      shell: bash
+
+    - run: |
+        echo "${{ inputs.ipAddress }} ${{ inputs.domain }}\" >> /etc/hosts
       shell: bash
 
     - run: |
